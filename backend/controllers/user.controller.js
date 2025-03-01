@@ -7,7 +7,7 @@ import fs from 'fs';
 import path from 'path';
 import faceapi from 'face-api.js';
 import { Canvas, Image } from 'canvas';
-import upload from "../midllewares/multer.js";
+import upload from "../middlewares/multer.js";
 
 const MODEL_PATH = path.resolve('models'); // Path to downloaded models
 await faceapi.nets.ssdMobilenetv1.loadFromDisk(MODEL_PATH);
