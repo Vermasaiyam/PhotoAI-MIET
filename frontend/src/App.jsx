@@ -21,10 +21,10 @@ const browserRouter = createBrowserRouter([
         <MainLayout />
       </ProtectedRoutes>,
     children: [
-      {
-        path: '/',
-        element: <Home />
-      },
+      // {
+      //   path: '/',
+      //   element: <Home />
+      // },
       {
         path: '/profile/:id',
         element:
@@ -44,27 +44,6 @@ const browserRouter = createBrowserRouter([
         element:
           <ProtectedRoutes>
             <ChangePassword />
-          </ProtectedRoutes>
-      },
-      {
-        path: '/summary/:id',
-        element:
-          <ProtectedRoutes>
-            <SummaryPage />
-          </ProtectedRoutes>
-      },
-      {
-        path: '/quiz/:id',
-        element:
-          <ProtectedRoutes>
-            <QuizPage />
-          </ProtectedRoutes>
-      },
-      {
-        path: '/history',
-        element:
-          <ProtectedRoutes>
-            <HistoryPage />
           </ProtectedRoutes>
       },
       {
