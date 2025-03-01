@@ -7,7 +7,7 @@ export default function About() {
         <div className="bg-gray-100 min-h-screen flex flex-col items-center py-12 px-4">
             {/* Hero Section */}
             <section className="text-center mb-12">
-                <h1 className="text-4xl font-bold text-gray-800">About QuizLab</h1>
+                <h1 className="text-4xl font-bold text-gray-800">About Photo-AI</h1>
                 <p className="mt-4 text-lg text-gray-600 max-w-2xl">
                     Transform your learning experience with AI-powered transcription, summarization, and quizzes!
                     Earn points and redeem them on various platforms.

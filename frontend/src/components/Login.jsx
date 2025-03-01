@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAuthUser } from '../redux/authSlice.js';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 
-const API_END_POINT = import.meta.env.VITE_API_END_POINT_USER || "https://quizlab.onrender.com/api/user";
+const API_END_POINT = import.meta.env.VITE_API_END_POINT_USER || "https://Photo-AI.onrender.com/api/user";
 
 const Login = () => {
     const [show, setShow] = useState(false);

@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { useSelector } from 'react-redux';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 
-const API_END_POINT = import.meta.env.VITE_API_END_POINT_USER || "https://quizlab.onrender.com/api/user";
+const API_END_POINT = import.meta.env.VITE_API_END_POINT_USER || "https://Photo-AI.onrender.com/api/user";
 
 const Signup = () => {
     const [show, setShow] = useState(false);

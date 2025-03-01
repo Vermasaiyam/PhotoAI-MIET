@@ -15,7 +15,7 @@ export default function Header() {
     const navigate = useNavigate();
     const location = useLocation();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile menu state
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
     const toggleMenu = () => setIsMenuOpen((prev) => !prev);
@@ -47,7 +47,7 @@ export default function Header() {
             <div className="container mx-auto flex justify-between items-center">
                 {/* Logo */}
                 <Link to={"/"} className="flex items-center gap-3">
-                    <img src="logo.png" alt="QuizLabs" className="md:h-20 h-16" />
+                    <img src="logo.png" alt="Photo-AIs" className="md:h-20 h-16" />
                 </Link>
 
                 {/* Hamburger Menu - Visible on Mobile */}

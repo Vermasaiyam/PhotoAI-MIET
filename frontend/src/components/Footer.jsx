@@ -8,7 +8,7 @@ const Footer = () => {
             <div className="flex lg:flex-row flex-col gap-8 justify-around items-center py-4 bg-blue-100 dark:bg-[#2E3A52] md:px-10 px-4">
                 <div className="">
                     <Link to={'/'} className="flex items-center justify-center gap-3">
-                        <img src="logo.png" alt="QuizLabs" className="md:h-20 h-16 mr-0" />
+                        <img src="logo.png" alt="Photo-AIs" className="md:h-20 h-16 mr-0" />
                     </Link>
                     <p className="text-gray-200 mb-2">
                         Transform YouTube videos into interactive quizzes and insightful summaries.
@@ -53,7 +53,7 @@ const Footer = () => {
                         <h1 className="font-bold text-red-400 dark:text-white md:text-lg text-xs">Get In Touch</h1>
                         <div className="flex flex-col gap-1 md:text-base text-xs dark:text-yellow-100">
                             <div className="">vermasaiyam9@gmail.com</div>
-                            <div className="">QuizLab</div>
+                            <div className="">Photo-AI</div>
                         </div>
                     </div>
                 </div>
