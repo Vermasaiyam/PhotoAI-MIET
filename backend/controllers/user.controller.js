@@ -1,48 +1,96 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
-import { Group } from "../models/group.model.js";
 import getDataUri from "../utils/dataUri.js";
 import cloudinary from "../utils/cloudinary.js";
+import fs from 'fs';
+import path from 'path';
+import faceapi from 'face-api.js';
+import { Canvas, Image } from 'canvas';
+import upload from "../midllewares/multer.js";
+
+const MODEL_PATH = path.resolve('models'); // Path to downloaded models
+await faceapi.nets.ssdMobilenetv1.loadFromDisk(MODEL_PATH);
+await faceapi.nets.faceRecognitionNet.loadFromDisk(MODEL_PATH);
+await faceapi.nets.faceLandmark68Net.loadFromDisk(MODEL_PATH);
 
 export const register = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        upload.single('photo')(req, res, async (err) => {
+            if (err) {
+                return res.status(500).json({ message: 'File upload error', success: false });
+            }
 
-        if (!username || !email || !password) {
-            return res.status(400).json({
-                message: "Empty fields!!!",
-                success: false,
+            const { username, email, password } = req.body;
+            if (!username || !email || !password || !req.file) {
+                return res.status(400).json({
+                    message: "All fields and a live photo are required!",
+                    success: false,
+                });
+            }
+
+            const userByEmail = await User.findOne({ email });
+            if (userByEmail) {
+                return res.status(400).json({
+                    message: "User with this email already exists.",
+                    success: false,
+                });
+            }
+
+            const userByUsername = await User.findOne({ username });
+            if (userByUsername) {
+                return res.status(400).json({
+                    message: "Username already taken. Please choose another one.",
+                    success: false,
+                });
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 7);
+
+            // Convert file to Data URI
+            const fileUri = getDataUri(req.file);
+
+            // Upload to Cloudinary
+            const cloudUpload = await cloudinary.uploader.upload(fileUri, {
+                folder: "profile_pictures",
             });
-        }
 
-        const userByEmail = await User.findOne({ email });
-        if (userByEmail) {
-            return res.status(400).json({
-                message: "User with this email already exists.",
-                success: false,
+            const imageUrl = cloudUpload.secure_url; // Get uploaded image URL
+
+            // Load image & extract face encoding
+            const imgBuffer = Buffer.from(req.file.buffer);
+            const image = new Image();
+            image.src = imgBuffer;
+            const canvas = new Canvas(image.width, image.height);
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(image, 0, 0);
+
+            const detections = await faceapi.detectSingleFace(canvas)
+                .withFaceLandmarks()
+                .withFaceDescriptor();
+
+            if (!detections) {
+                return res.status(400).json({
+                    message: "No face detected in the image. Please try again.",
+                    success: false,
+                });
+            }
+
+            const faceEncoding = Array.from(detections.descriptor); // Convert to array for storage
+
+            // Save user with Cloudinary URL & Face Encoding
+            await User.create({
+                username,
+                email,
+                password: hashedPassword,
+                profilePicture: imageUrl, // Save Cloudinary URL
+                faceEncoding, // Save extracted encoding
             });
-        }
 
-        const userByUsername = await User.findOne({ username });
-        if (userByUsername) {
-            return res.status(400).json({
-                message: "Username already taken. Please choose another one.",
-                success: false,
+            return res.status(201).json({
+                message: "Account created successfully.",
+                success: true,
             });
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 7);
-
-        await User.create({
-            username,
-            email,
-            password: hashedPassword,
-        });
-
-        return res.status(201).json({
-            message: "Account created successfully.",
-            success: true,
         });
     } catch (error) {
         console.log(error);
@@ -52,6 +100,7 @@ export const register = async (req, res) => {
         });
     }
 };
+
 
 export const login = async (req, res) => {
     try {
