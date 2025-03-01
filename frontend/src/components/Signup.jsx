@@ -10,8 +10,6 @@ const API_END_POINT = import.meta.env.VITE_API_END_POINT_USER || "https://Photo-
 
 const Signup = () => {
     const [show, setShow] = useState(false);
-    const handleClick = () => setShow(!show);
-
     const { user } = useSelector(store => store.auth);
 
     const [input, setInput] = useState({
@@ -24,6 +22,7 @@ const Signup = () => {
 
     const videoRef = useRef(null);
     const [image, setImage] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null); // Store the preview URL
 
     useEffect(() => {
         if (user) {
@@ -55,6 +54,7 @@ const Signup = () => {
         context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
         canvas.toBlob(blob => {
             setImage(blob);
+            setImagePreview(URL.createObjectURL(blob)); // Generate preview URL
         }, "image/jpeg");
     };
 
@@ -64,7 +64,7 @@ const Signup = () => {
             toast.error("Please capture your photo before signing up.");
             return;
         }
-        
+
         try {
             setLoading(true);
             const formData = new FormData();
@@ -83,6 +83,7 @@ const Signup = () => {
                 toast.success(res.data.message);
                 setInput({ username: "", email: "", password: "" });
                 setImage(null);
+                setImagePreview(null);
             }
         } catch (error) {
             console.error(error);
@@ -97,25 +98,33 @@ const Signup = () => {
             <form onSubmit={signupHandler} className='shadow-lg flex flex-col gap-5 p-8 py-10 max-w-lg w-full'>
                 <h1 className='text-center font-bold text-4xl'>Create an account</h1>
                 <p className='text-center'>To continue, fill out the personal info and capture a photo.</p>
-                
+
                 <input type="text" name="username" value={input.username} onChange={changeEventHandler} placeholder="Username" className="p-3 border rounded-md w-full" required />
                 <input type="email" name="email" value={input.email} onChange={changeEventHandler} placeholder="Email" className="p-3 border rounded-md w-full" required />
-                
+
                 <div className="relative">
                     <input type={show ? "text" : "password"} name="password" value={input.password} onChange={changeEventHandler} placeholder="Password" className="p-3 border rounded-md w-full pr-10" required />
                     <button type="button" onClick={() => setShow(!show)} className="absolute right-3 top-1/2 transform -translate-y-1/2">
                         {show ? <FiEyeOff size={20} /> : <FiEye size={20} />}
                     </button>
                 </div>
-                
+
                 <div className='flex flex-col items-center'>
-                    <video ref={videoRef} autoPlay className='w-full max-h-64 border rounded-md' />
+                    {imagePreview ? (
+                        <div className="w-full flex justify-center mb-2">
+                            <img src={imagePreview} alt="Captured" className="w-full max-h-64 object-cover border rounded-md" />
+                        </div>
+                    ) : (
+                        <video ref={videoRef} autoPlay className='w-full max-h-64 border rounded-md' style={{ display: videoRef.current ? 'block' : 'none' }} />
+                    )}
+
                     <button type='button' onClick={startCamera} className='mt-3 bg-blue-600 text-white px-4 py-2 rounded-md'>Start Camera</button>
                     <button type='button' onClick={capturePhoto} className='mt-2 bg-green-600 text-white px-4 py-2 rounded-md'>Capture Photo</button>
                 </div>
-                
+
+
                 {image && <p className='text-green-600 text-center'>Photo captured successfully!</p>}
-                
+
                 {loading ? (
                     <button disabled className='flex items-center justify-center p-3 bg-gray-300 text-gray-600 rounded-md cursor-not-allowed'>
                         <Loader2 className='mr-2 h-4 w-4 animate-spin' />
@@ -124,7 +133,7 @@ const Signup = () => {
                 ) : (
                     <button type='submit' className='p-3 bg-[#042035] hover:bg-[#165686] text-white rounded-md cursor-pointer'>Signup</button>
                 )}
-                
+
                 <span className='text-center'>
                     Already have an account? <Link to="/login" className='text-blue-600'>Login</Link>
                 </span>
