@@ -8,59 +8,111 @@ import Contact from "./components/Contact";
 import About from "./components/About";
 import EditProfile from "./components/EditProfile";
 import ChangePassword from "./components/ChangePassword";
+import HomePage from "./components/Home";
+import UploadImagePage from "./components/UploadImagePage";
+import GroupImages from "./components/Group";
+import GroupPage from "./components/SharedUserPage";
+import DashboardPage from "./components/Dashboard";
 
 const browserRouter = createBrowserRouter([
   {
     path: "/",
-    element:
-      // <ProtectedRoutes>
-        <MainLayout />,
-      // </ProtectedRoutes>,
+    element: (
+      <ProtectedRoutes>
+        <MainLayout />
+      </ProtectedRoutes>
+    ),
     children: [
       {
-        path: '/profile/:id',
-        element:
-          // <ProtectedRoutes>
+        path: "/",
+        element: (
+          <ProtectedRoutes>
+            <HomePage />
+            <DashboardPage />
+          </ProtectedRoutes>
+        ),
+      },
+      {
+        path: "/profile/:id",
+        element: (
+          <ProtectedRoutes>
             <Profile />
-          // </ProtectedRoutes>
+          </ProtectedRoutes>
+        ),
       },
       {
-        path: '/profile/:id/edit',
-        element:
-          // <ProtectedRoutes>
+        path: "/profile/:id/edit",
+        element: (
+          <ProtectedRoutes>
             <EditProfile />
-          // </ProtectedRoutes>
+          </ProtectedRoutes>
+        ),
       },
       {
-        path: '/profile/:id/change-password',
-        element:
-          // <ProtectedRoutes>
+        path: "/profile/:id/change-password",
+        element: (
+          <ProtectedRoutes>
             <ChangePassword />
-          // </ProtectedRoutes>
+          </ProtectedRoutes>
+        ),
       },
       {
-        path: '/contact',
-        element:
-          // <ProtectedRoutes>
+        path: "/contact",
+        element: (
+          <ProtectedRoutes>
             <Contact />
-          // </ProtectedRoutes>
+          </ProtectedRoutes>
+        ),
       },
       {
-        path: '/about',
-        element:
-          // <ProtectedRoutes>
+        path: "/about",
+        element: (
+          <ProtectedRoutes>
             <About />
-          // </ProtectedRoutes>
+          </ProtectedRoutes>
+        ),
       },
-    ]
+      {
+        path: "/upload-image",
+        element: (
+          <ProtectedRoutes>
+            <UploadImagePage />
+          </ProtectedRoutes>
+        ),
+      },
+      {
+        path: "/group/:id",
+        element: (
+          <ProtectedRoutes>
+            <GroupImages />
+          </ProtectedRoutes>
+        ),
+      },
+      {
+        path: "/dashboard",
+        element: (
+          <ProtectedRoutes>
+            <DashboardPage />
+          </ProtectedRoutes>
+        ),
+      },
+      {
+        path: "/group/:groupName/:groupId",
+        element: (
+          <ProtectedRoutes>
+            <GroupPage />
+          </ProtectedRoutes>
+        ),
+      },
+    ],
   },
   {
-    path: '/login',
-    element: <Login />
+    path: "/login",
+    element: <Login />,
   },
   {
-    path: '/signup',
-    element: <Signup />
+    path: "/signup",
+    element: <Signup />,
   },
 ]);
 
