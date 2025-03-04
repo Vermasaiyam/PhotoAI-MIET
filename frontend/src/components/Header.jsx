@@ -37,22 +37,26 @@ export default function Header() {
 
     const navItems = [
         { name: "Home", path: "/" },
-        { name: "History", path: "/history" },
+        { name: "Dashboard", path: "/dashboard" },
         { name: "About", path: "/about" },
         { name: "Contact", path: "/contact" },
     ];
 
     return (
-        <header className="bg-gray-800 px-6 text-white shadow-md z-10">
-            <div className="container mx-auto flex justify-between items-center">
+        <header className="text-white shadow-md backdrop-blur-sm bg-black top-0 fixed w-full z-50">
+            <div className="container mx-auto flex justify-between items-center py-2 px-4 md:px-6">
                 {/* Logo */}
                 <Link to={"/"} className="flex items-center gap-3">
-                    <img src="logo.png" alt="Photo-AIs" className="md:h-20 h-16" />
+                    <img
+                        src={"logo.png"}
+                        alt="Photo-AIs"
+                        className="md:h-16 h-12 scale-200 ml-10"
+                    />
                 </Link>
 
                 {/* Hamburger Menu - Visible on Mobile */}
                 <button
-                    className="md:hidden text-white focus:outline-none cursor-pointer"
+                    className="md:hidden text-white focus:outline-none cursor-pointer p-2"
                     onClick={toggleMenu}
                 >
                     {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -66,7 +70,9 @@ export default function Header() {
                             <Link
                                 key={name}
                                 to={path}
-                                className={`relative text-lg transition-all duration-300 ${isActive ? "font-bold text-white" : "text-gray-300 hover:text-white"
+                                className={`relative text-lg transition-all duration-300 ${isActive
+                                        ? "font-bold text-white"
+                                        : "text-gray-300 hover:text-white"
                                     }`}
                             >
                                 {name}
@@ -122,15 +128,17 @@ export default function Header() {
 
             {/* Mobile Menu - Only visible when menu is open */}
             {isMenuOpen && (
-                <div className="md:hidden absolute top-16 left-0 w-full bg-gray-900 shadow-lg z-10">
-                    <nav className="flex flex-col items-center space-y-4 py-4">
+                <div className="md:hidden absolute top-full left-0 w-full bg-black/90 backdrop-blur-sm shadow-lg z-10">
+                    <nav className="flex flex-col items-center space-y-4 py-6">
                         {navItems.map(({ name, path }) => {
                             const isActive = location.pathname === path;
                             return (
                                 <Link
                                     key={name}
                                     to={path}
-                                    className={`text-lg transition-all duration-300 ${isActive ? "font-bold text-white" : "text-gray-300 hover:text-white"
+                                    className={`text-lg transition-all duration-300 ${isActive
+                                            ? "font-bold text-white"
+                                            : "text-gray-300 hover:text-white"
                                         }`}
                                     onClick={() => setIsMenuOpen(false)}
                                 >
@@ -157,8 +165,8 @@ export default function Header() {
                                 </button>
                             </>
                         ) : (
-                            <Link to="/login">
-                                <button className="bg-red-500 hover:bg-red-700 transition-all duration-200 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                            <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                                <button className="bg-red-500 hover:bg-red-700 transition-all duration-200 text-white font-bold py-2 px-6 rounded-lg">
                                     Login
                                 </button>
                             </Link>
