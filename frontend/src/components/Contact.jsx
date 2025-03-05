@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 export default function Contact() {
     return (
-        <div className="flex flex-col items-center mx-auto px-4 py-16">
+        <div className="min-h-[70vh] flex flex-col items-center mx-auto px-4 py-16">
             <h1 className="text-4xl font-bold text-center mb-4">Contact Us</h1>
             <p className="text-center mb-8">Don't hesitate to reach out!</p>
 
