@@ -8,6 +8,7 @@ from flask_cors import CORS
 from io import BytesIO
 from PIL import Image
 
+
 app = Flask(__name__, template_folder=".")  # Set root directory for templates
 CORS(app)
 
